@@ -67,7 +67,6 @@ class UKF {
         ///* Sigma point spreading parameter
         double lambda_;
 
-
         /**
          * Constructor
          */
@@ -102,6 +101,20 @@ class UKF {
          * @param meas_package The measurement at k+1
          */
         void UpdateRadar(MeasurementPackage meas_package);
+
+        double NIS_laser_;
+        double NIS_radar_;
+        int n_radar_;
+        int n_laser_;
+
+    private:
+        void GenerateSigmaPoints(MatrixXd *Xsig_out);
+        void AugmentedSigmaPoints(MatrixXd *Xsig_out);
+        void SigmaPointPrediction(MatrixXd Xsig_aug, double delta_t);
+        void PredictMeanAndCovariance(VectorXd *x_pred, MatrixXd *P_pred);
+        void PredictRadarMeasurement(VectorXd *z_out, MatrixXd *Zsig_out, MatrixXd *S_out);
+        void PredictLidarMeasurement(VectorXd *z_out, MatrixXd *Zsig_out, MatrixXd *S_out);
+        void UpdateFilter(MatrixXd Tc, MatrixXd Zsig, MatrixXd S, VectorXd z_pred, VectorXd z, VectorXd *x_out, MatrixXd *P_out, VectorXd *z_diff_out);
 };
 
 #endif /* UKF_H */
