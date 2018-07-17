@@ -27,11 +27,11 @@ UKF::UKF()
 
     // Process noise standard deviation longitudinal acceleration in m/s^2
     // **** NOTE: Can be tuned ****
-    std_a_ = 1.5;
+    std_a_ = 2;
 
     // Process noise standard deviation yaw acceleration in rad/s^2
     // **** NOTE: Can be tuned ****
-    std_yawdd_ = 6;
+    std_yawdd_ = 0.3;
 
     //DO NOT MODIFY measurement noise values below these are provided by the sensor manufacturer.
     // Laser measurement noise standard deviation position1 in m
@@ -110,10 +110,10 @@ void UKF::ProcessMeasurement(MeasurementPackage meas_package)
 
     if (!is_initialized_)
     {
-        x_ << 1, 1, 1, 1, 1;
+        x_ << 1, 1, 1, 1, 0.1;
         // init covariance matrix
-        P_ << 1, 0, 0, 0, 0,
-              0, 1, 0, 0, 0,
+        P_ << 0.15, 0, 0, 0, 0,
+              0, 0.15, 0, 0, 0,
               0, 0, 1, 0, 0,
               0, 0, 0, 1, 0,
               0, 0, 0, 0, 1;
@@ -123,9 +123,9 @@ void UKF::ProcessMeasurement(MeasurementPackage meas_package)
             x_(0) = meas_package.raw_measurements_(0);
             x_(1) = meas_package.raw_measurements_(1);
             // **** NOTE: Can be tuned (all three) ****
-            x_(2) = 0;
-            x_(3) = 0;
-            x_(4) = 0;
+            // x_(2) = 0;
+            // x_(3) = 0;
+            // x_(4) = 0;
         }
         else if (meas_package.sensor_type_ == MeasurementPackage::RADAR && use_radar_)
         {
@@ -153,9 +153,9 @@ void UKF::ProcessMeasurement(MeasurementPackage meas_package)
             x_(0) = x;
             x_(1) = y;
             // **** NOTE: Can be tuned (all three) ****
-            x_(2) = 0;
-            x_(3) = 0;
-            x_(4) = 0;
+            // x_(2) = 0;
+            // x_(3) = 0;
+            // x_(4) = 0;
         }
 
         time_us_ = meas_package.timestamp_;
@@ -207,16 +207,20 @@ void UKF::Prediction(double delta_t)
     // GenerateSigmaPoints(&Xsig);
     MatrixXd Xsig_aug = MatrixXd(n_aug_, 2 * n_aug_ + 1);
     AugmentedSigmaPoints(&Xsig_aug);
+    std::cout << "Xsig_aug = " << std::endl << Xsig_aug << std::endl;
 
     /***********************************************************
      * Predict Sigma Points
      ***********************************************************/
     SigmaPointPrediction(Xsig_aug, delta_t);
+    std::cout << "Xsig_pred_ = " << std::endl << Xsig_pred_ << std::endl;
 
     /***********************************************************
      * Predict Mean and Covariance
      ***********************************************************/
     PredictMeanAndCovariance(&x_, &P_);
+    std::cout << "x_ = " << std::endl << x_ << std::endl;
+    std::cout << "P_ = " << std::endl << P_ << std::endl;
 }
 
 /**
