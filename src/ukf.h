@@ -102,18 +102,54 @@ class UKF {
          */
         void UpdateRadar(MeasurementPackage meas_package);
 
-        MatrixXd R_laser_;
-        MatrixXd R_radar_;
 
         double NIS_laser_;
         double NIS_radar_;
-        int n_radar_;
-        int n_laser_;
 
     private:
-        void GenerateSigmaPoints(MatrixXd *Xsig_out);
+        ///* NIS Value writer (used to store NIS values of Radar on csv file)
+        std::fstream NIS_writer_radar_;
+
+        ///* NIS Value writer (used to store NIS values of Laser on csv file)
+        std::fstream NIS_writer_laser_;
+
+        ///* Laser noise covariance matrix
+        MatrixXd R_laser_;
+
+        ///* Radar noise covariance matrix
+        MatrixXd R_radar_;
+
+        ///* measurement dimensions for Radar
+        int n_radar_;
+
+        ///* measurement dimensions for Laser
+        int n_laser_;
+
+        /**
+         * Normalizes the angle value (provided index) of provided vector
+         * @param {VectorXd &} res  Vector to be look for
+         * @param {int} index       Vector index to be normalized
+         */
+        inline void NormalizeAngle(VectorXd &res, int index);
+
+        /**
+         * Populates Augmented Sigma Points
+         * @param {MatrixXd *} Xsig_out    Augmented Sigma Points
+         */
         void AugmentedSigmaPoints(MatrixXd *Xsig_out);
+
+        /**
+         * Predicts Sigma Points
+         * @param {MatrixXd *} Xsig_out    Augmented Sigma Points
+         * @param {double} delta_t         timestamp difference
+         */
         void SigmaPointPrediction(MatrixXd Xsig_aug, double delta_t);
+
+        /**
+         * Predicts mean and covariance matrix for UKF
+         * @param {VectorXd *} x_pred   predicted mean matrix
+         * @param {MatrixXd *} P_pred   predicted covariance matrix
+         */
         void PredictMeanAndCovariance(VectorXd *x_pred, MatrixXd *P_pred);
 };
 
