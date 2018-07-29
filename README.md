@@ -103,7 +103,7 @@ for instructions and the project rubric.
 
   | Dataset | RMSE [X Y VX VY]              |
   | ------- | ----------------------------- |
-  | 1       | [0.0650 0.0831 0.3324 0.2145] |
+  | 1       | [0.0733 0.0815 0.3099 0.2830] |
 
   *Result from Dataset 1 [UKF]*
 
