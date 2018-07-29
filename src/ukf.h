@@ -102,6 +102,9 @@ class UKF {
          */
         void UpdateRadar(MeasurementPackage meas_package);
 
+        MatrixXd R_laser_;
+        MatrixXd R_radar_;
+
         double NIS_laser_;
         double NIS_radar_;
         int n_radar_;
