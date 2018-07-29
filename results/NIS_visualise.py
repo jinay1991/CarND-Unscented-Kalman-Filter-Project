@@ -26,7 +26,7 @@ ax.plot(dfRadar)
 plt.title("NIS_radar")
 ax.legend()
 
-fig.savefig("NIS_radar.png")
+fig.savefig("../examples/NIS_radar.png")
 
 
 # In[14]:
@@ -38,5 +38,5 @@ ax.plot(dfLaser)
 plt.title("NIS_laser")
 ax.legend()
 
-fig.savefig("NIS_laser.png")
+fig.savefig("../examples/NIS_laser.png")
 

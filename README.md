@@ -87,29 +87,27 @@ for instructions and the project rubric.
 
 * `px, py, vx, vy` output coordinates must have an `RMSE <= [.09, .10, .40, .30]` when using the file: `obj_pose-laser-radar-synthetic-input.txt`, which is the same data file the simulator uses for Dataset 1.
 
-  Unscented Kalman Filter accuracy at end of path for given two datasets are as given below which meets the requirement of `RMSE <= [.09 .10 .40 .30]` when using file `obj_pose-laser-radar-synthetic-input.txt` which is same data file as `Dataset 1`. Although I have tested with `Dataset 2` and that meets requirement too:
+  Unscented Kalman Filter accuracy at end of path for given two datasets are as given below which meets the requirement of `RMSE <= [.09 .10 .40 .30]` when using file `obj_pose-laser-radar-synthetic-input.txt` which is same data file as `Dataset 1`.
 
   **EKF RMSE values**
+
+  *RMSE <= [.11, .11, 0.52, 0.52]*
 
   | Dataset | RMSE [X Y VX VY]              |
   | ------- | ----------------------------- |
   | 1       | [0.0964 0.0854 0.4154 0.4316] |
-  | 2       | [0.0726 0.0965 0.4219 0.4937] |
 
   **UKF RMSE values**
+
+  *RMSE <= [.09 .10 .40 .30]*
 
   | Dataset | RMSE [X Y VX VY]              |
   | ------- | ----------------------------- |
   | 1       | [0.0650 0.0831 0.3324 0.2145] |
-  | 2       | [0.0671 0.0651 0.6194 0.2647] |
 
-  *Result from Dataset 1*
+  *Result from Dataset 1 [UKF]*
 
   ![image1](examples/ds1.png)
-
-  *Result from Dataset 2*
-
-  ![image2](examples/ds2.png)
 
 ### Follows the Correct Algorithm
 
@@ -123,11 +121,11 @@ for instructions and the project rubric.
 
   I have initialized object positions for UKF measurement matrix from the most recent data received. For `RADAR` data inputs, I have first converted them to `Cartesian` coordinate system from the `Polar` Coordinate system.
 
-  Implementation can be found in `src/ukf.cpp` (line 111-166).
+  Implementation can be found in `src/ukf.cpp` (line 138-187).
 
 * Your Kalman Filter algorithm first predicts then updates.
 
-  I have updated State trasition matrix and process covariance matrix, based on the `timestamp` difference in seconds, prior to performing predictions. (Implementation at `src/ukf.cpp` line 172-187).
+  I have updated State trasition matrix and process covariance matrix, based on the `timestamp` difference in seconds, prior to performing predictions. (Implementation at `src/ukf.cpp` line 192-208).
 
   Here, update happens differently for `RADAR` and `LIDAR/LASER` data input. Implementation for `UpdateLidar()` at line 226-324 and `UpdateRadar()` at line 330-435.
 

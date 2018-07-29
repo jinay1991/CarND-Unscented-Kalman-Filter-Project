@@ -37,7 +37,7 @@ UKF::UKF()
 
     // Process noise standard deviation yaw acceleration in rad/s^2
     // **** NOTE: Can be tuned ****
-    std_yawdd_ = 0.75;
+    std_yawdd_ = 0.5;
 
     //DO NOT MODIFY measurement noise values below these are provided by the sensor manufacturer.
     // Laser measurement noise standard deviation position1 in m
@@ -109,8 +109,8 @@ UKF::UKF()
     // the current NIS for laser
     NIS_laser_ = 0.0;
 
-    NIS_writer_radar_.open("nis_radar.txt", ios::out);
-    NIS_writer_laser_.open("nis_laser.txt", ios::out);
+    NIS_writer_radar_.open("../results/nis_radar.txt", ios::out);
+    NIS_writer_laser_.open("../results/nis_laser.txt", ios::out);
 }
 
 UKF::~UKF()
@@ -139,8 +139,8 @@ void UKF::ProcessMeasurement(MeasurementPackage meas_package)
             x_(1) = meas_package.raw_measurements_(1) > 0.0001 ? meas_package.raw_measurements_(1) : 0.0001;
             // **** NOTE: Can be tuned (all three) ****
             x_(2) = 0;
-            x_(3) = 0;
-            x_(4) = 0;
+            x_(3) = 0.8;
+            x_(4) = 0.8;
         }
         else if (meas_package.sensor_type_ == MeasurementPackage::RADAR && use_radar_)
         {
@@ -174,9 +174,9 @@ void UKF::ProcessMeasurement(MeasurementPackage meas_package)
             x_(0) = x;
             x_(1) = y;
             // **** NOTE: Can be tuned (all three) ****
-            x_(2) = 0;//sqrt(vx * vx + vy * vy);
-            x_(3) = 0;
-            x_(4) = 0;
+            x_(2) = sqrt(vx * vx + vy * vy);
+            x_(3) = vx;
+            x_(4) = vy;
         }
 
         time_us_ = meas_package.timestamp_;
