@@ -7,8 +7,6 @@
 import matplotlib.pyplot as plt
 import pandas as pd
 
-get_ipython().run_line_magic('matplotlib', 'inline')
-
 
 # In[2]:
 
